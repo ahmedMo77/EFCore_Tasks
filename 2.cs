@@ -30,7 +30,7 @@ namespace EFCore3
         }
     }
   
-    // Student class
+    // Product class
     public class Product
     {
         [Key]
@@ -43,7 +43,7 @@ namespace EFCore3
         public Category category { get; set; }
     }
 
-    // course class
+    // Category class
     public class Category
     {
         [Key]
@@ -60,7 +60,7 @@ namespace EFCore3
         {
             optionsBuilder.UseSqlServer(Connections.SqlConStr);
         }
-        public DbSet<Category> categorys { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
     
     }
