@@ -12,7 +12,25 @@ namespace EFCore3
     // i will use Data Anotation not "fluent API"
     // to add migration => add-migration migration_name
     // and to update this migration in db => update-migration
-  
+
+    // Main class to solve "question 4"
+    internal class program
+    {
+        static void Main(string[] args)
+        {
+            using (var context = new AppDbContext())
+            {
+                int courseId = 1;
+                
+                var students = context.StudentCourses
+                    .Where(sc => sc.CourseId == courseId)
+                    .OrderBy(sc => sc.Student.EnrollmentDate)
+                    .Select(sc => sc.Student)
+                    .ToList();
+            }
+        }
+    }
+    
     // Student class
     public class Student
     {
@@ -21,8 +39,9 @@ namespace EFCore3
         public string Name { get; set; }
         public string Email { get; set; }
         public int Age { get; set; }
+        public DateTime EnrollmentDate { get; set; }
     
-        public ICollection<StudentCourse> studentCourses { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
     }
 
     // course class
@@ -32,7 +51,7 @@ namespace EFCore3
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<StudentCourse> studentCourses { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
     }
 
     // student course class to link class 
@@ -40,13 +59,13 @@ namespace EFCore3
     {
         public int Id { get; set; }
     
-        [ForeignKey("student")]
+        [ForeignKey("Student")]
         public int StudentId { get; set; }
-        public Student student { get; set; }
+        public Student Student { get; set; }
     
-        [ForeignKey("course")]
+        [ForeignKey("Course")]
         public int CourseId { get; set; }
-        public Course course { get; set; }
+        public Course Course { get; set; }
     
     }
 
@@ -57,9 +76,9 @@ namespace EFCore3
         {
             optionsBuilder.UseSqlServer(Connections.SqlConStr);
         }
-        public DbSet<Student> students { get; set; }
-        public DbSet<Course> courses { get; set; }
-        public DbSet<StudentCourse> studentCourses { get; set; }
+        public DbSet<Student> Ctudents { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<StudentCourse> StudentCourses { get; set; }
     
     }
 }
